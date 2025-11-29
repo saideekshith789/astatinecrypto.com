@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Astatine (AM) – Premium Polygon Coin</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- Welcome Popup -->
+  <div id="welcome-popup">
+    <div class="welcome-content">
+      <img src="logo.png" alt="Astatine Logo" class="welcome-logo">
+      <h2>Welcome to the Astatine World!</h2>
+      <button id="close-popup">Enter</button>
+    </div>
+  </div>
+
+  <div class="wrapper">
+    <!-- Top Bar: menu left, small logo right -->
+    <div class="top-bar">
+      <div class="hamburger-wrap">
+        <button class="hamburger-btn" onclick="toggleMenu()">
+          <span></span><span></span><span></span>
+        </button>
+        <div id="hamburger-menu" class="hamburger-menu">
+          <button onclick="menuClick('info-block')">Details</button>
+          <button onclick="menuClick('aim-section')">Aim</button>
+          <button onclick="menuClick('visual-chart-block')">Chart</button>
+          <button onclick="menuClick('txn-section')">Transactions</button>
+          <button onclick="menuClick('contact-block')">Contact</button>
+        </div>
+      </div>
+      <div class="top-logo-small">
+        <img src="logo.png" alt="Astatine Small Logo">
+      </div>
+    </div>
+
+    <!-- Buy Button -->
+    <div class="buy-btn-wrap fade-up">
+      <a href="https://www.instagram.com/astatine_official_?igsh=MXdwNDRnNXlvYmEzdg==" target="_blank" class="buy-btn">
+        Buy Astatine (AM)
+      </a>
+    </div>
+
+    <!-- Logo -->
+    <div class="logo-wrap fade-up">
+      <img src="logo.png" alt="Astatine Logo" class="big-logo">
+    </div>
+
+    <!-- Name and Tagline -->
+    <h1 class="main-title fade-up delay-1">Astatine (AM)</h1>
+    <p class="tagline fade-up delay-2">Your gateway to a new currency of the future world.</p>
+
+    <!-- Current Price -->
+    <section class="price-block fade-up delay-2a">
+      <h2>Current Price</h2>
+      <div class="price-value">$0.00010972</div>
+    </section>
+
+    <!-- Coin Details -->
+    <section class="info-block fade-up delay-3">
+      <h2>Coin Details</h2>
+      <ul>
+        <li><strong>Market Cap:</strong> $1.09M</li>
+        <li><strong>Total Supply:</strong> 10B</li>
+        <li><strong>Network:</strong> Polygon</li>
+        <li><strong>Contract:</strong>
+          <span class="contract-box" id="contract-address">0x9f3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</span>
+          <button onclick="copyContract()" class="copy-btn">copy</button>
+        </li>
+        <li><strong>Created:</strong> Oct 3, 2025</li>
+        <li><strong>Holders:</strong> 20</li>
+      </ul>
+    </section>
+
+    <!-- Team -->
+    <section class="team-block fade-up delay-4">
+      <h2>Team</h2>
+      <ul>
+        <li><strong>Founder:</strong> Abhinav Sai Nath</li>
+        <li><strong>Co-Founder:</strong> Kokil Reddy</li>
+        <li><strong>CEO:</strong> Sai Deekshith.R</li>
+        <li><strong>Manager:</strong> Vishnu</li>
+      </ul>
+    </section>
+
+    <!-- Growth -->
+    <section class="growth-block fade-up delay-5">
+      <h2>1st Month Growth</h2>
+      <div class="growth-percent">+249.23%</div>
+    </section>
+
+    <!-- Chart -->
+    <section class="visual-chart-block fade-up delay-6">
+      <h2>Astatine (AM) – Price Growth</h2>
+      <canvas id="coinChart" width="400" height="180"></canvas>
+    </section>
+
+    <!-- Play & Earn -->
+    <div class="play-earn-wrap fade-up delay-7">
+      <a href="https://www.astrocade.com/games/cosmic-dash-astatine-odyssey/01KB082AH8HVCVF5FDW7YX1MPM"
+         target="_blank" class="play-earn-btn">
+        ▶️ Play &amp; Earn (Astatine Odyssey)
+      </a>
+    </div>
+
+    <!-- Aim & Future Goals -->
+    <section class="aim-section fade-up delay-7a">
+      <h2>Aim &amp; Future Goals</h2>
+      <p>
+        Astatine (AM) is a next-generation utility token created to revolutionize the e-commerce world through blockchain technology. Unlike typical meme or speculative coins, Astatine is built with a clear real-world purpose: to power a complete decentralized e-commerce ecosystem where users can shop, pay, and earn directly using crypto. AM enables fast, secure, and gas-efficient transactions designed specifically for everyday shopping. The project aims to integrate crypto payments into online marketplaces by providing merchant tools, customer rewards, decentralized product listings, and seamless checkout experiences. By removing middlemen, Astatine lowers transaction fees, increases transparency, and offers a borderless shopping experience.
+      </p>
+      <p>
+        Our vision is to build a future-ready e-commerce universe where every product purchase, reward, and transaction operates on blockchain. Astatine connects merchants and buyers directly, creating a transparent, user-driven marketplace. With AM at the core, users will gain access to loyalty rewards, exclusive offers, and a smoother shopping experience powered entirely by decentralized technology. Astatine stands apart by focusing on utility over speculation, combining practicality, innovation, and real-world adoption. AM isn’t just a coin; it’s the foundation of a crypto-powered shopping world built for the future.
+      </p>
+    </section>
+
+    <!-- Transaction History (all 35 rows + show more/less) -->
+    <section class="txn-section fade-up delay-8">
+      <h2>Recent Transaction History (Polygon)</h2>
+      <div id="txn-table-wrap">
+        <table id="txn-table">
+          <thead>
+            <tr>
+              <th>Hash</th>
+              <th>Date/Time</th>
+              <th>From</th>
+              <th>To</th>
+              <th>Amount (AM)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- first 5 visible -->
+            <tr><td>0x6209dd5f9f6a21c939d8eeaf81e80af8940aec1d4496d10d9d29b583cfa0b01c</td><td>2025-11-26 18:01:41</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr><td>0x8973f015c4f8e411b77319c58d05fdaee5a9e43dfcc18c2df2146688e5b65893</td><td>2025-11-18 16:05:23</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr><td>0x6d88d6e14f32bc1d5ab234eac12c2a0383155b74a782d52a786bf58ca6cceb74</td><td>2025-11-14 16:42:00</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr><td>0xfa1651ae3c3085bc2efc76e5b87304af37d83eb7b3cbe4a8e4b0b1026f69032a</td><td>2025-11-14 13:46:14</td><td>0xEA5dB6A5bC907490ADf29CFb2F1A3C95f664dA27</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr><td>0xf8c918ca83c3a3e38224361ec254f7f04813802201597c084485486fdf411f5a</td><td>2025-11-13 15:53:28</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+
+            <!-- remaining 30 rows (hidden initially) -->
+            <tr class="extra-row"><td>0x18027e724a0a3993cb81d66dce5a76c6327acd8fc6d9cc6cf959935d35d3b3d3</td><td>2025-11-13 04:04:52</td><td>0x75684C3EEdA98B54f848229f01B1E8BbAba8D75A</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0x3c3be17b836b750c9219bfcc9b2d802cff4f66ccefa10a7a5721238145a0ed09</td><td>2025-11-12 14:29:59</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0xff4726e7e9869bdc4fba085358d0391ee9f58c9d4ff4dcf2440d6d8e34effbb8</td><td>2025-11-12 14:28:05</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0x031cfc7696246b31b5d8f4f2f14d2639084a866e3b6aa58caad6d89d401cf243</td><td>2025-11-12 13:59:03</td><td>0xEA5dB6A5bC907490ADf29CFb2F1A3C95f664dA27</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0xdd5142d4ed099b04084d7c62157f6c3ac293a3806b859237e86e2aad66099c8</td><td>2025-11-12 13:57:07</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0x462ccac0e56b0c988db000ee75f4ce10069741d7396f373976dd3a40309430e</td><td>2025-11-12 13:57:07</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0x9ffda5a2b6bd7d80d73493b94a831751ad8d0dfca54f2ccd25b4ad507dd0c1f0</td><td>2025-11-12 11:58:01</td><td>0xEA5dB6A5bC907490ADf29CFb2F1A3C95f664dA27</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0x5c8b0f79a8a51f6bb59784021d42ed1fd435f23772608c576bcfd79c6bb53b72</td><td>2025-11-11 12:15:23</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0xfbe0d8417420f65ac7cdce68bf258337e368aa56f6922b6ea5f14d009bc20913</td><td>2025-11-11 12:06:43</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0x6687cf894d45a17cd91bc831aaf78b601a0aa76922f4ed040199c3cf180787a3</td><td>2025-11-09 05:04:55</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0x5cd28d2936103aa5e02986016ce4b4ef909b4058121b8d1a5c27aa93c3fe5c8</td><td>2025-11-09 04:36:23</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0xcdf53eca3a0a5e32ae66b353a34ad43a892f7e386d48c73b4710a400d2ba8ad</td><td>2025-11-09 04:29:00</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0x0ef768805d44e8ecb5394814ebf19a4d2ae2b3706e8adb249382900882213ea</td><td>2025-11-09 04:24:58</td><td>0xEA5dB6A5bC907490ADf29CFb2F1A3C95f664dA27</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0x256e7c0020ed131152ced7837cceef8a8c2deefc457de661f4a34cca3ca1701e</td><td>2025-11-09 04:22:45</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0x1aa22fa570d1f848f3d6ac1a8c4bf152118775ff53afead57e017c9fb6feedf5</td><td>2025-11-09 04:18:54</td><td>0xEA5dB6A5bC907490ADf29CFb2F1A3C95f664dA27</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0x6b8e9e1d8c84656d5728fb1253600d28a95880aad2ee86694b9cf6b98879d9d</td><td>2025-11-09 04:14:52</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0xf6755b1f2ae69737d614216092703e78ca37ed1de2808cccafac9b25f7569fd3</td><td>2025-11-08 18:11:53</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0x5b177d873cfd66978d39536af48024cf5697a15cd23979011500922646791934</td><td>2025-11-08 17:39:25</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0xa14c0e34262017d32f83f748a2e2fae2f629bea7ffac0d68deceb931421aeddf</td><td>2025-11-08 17:35:28</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0x0b05c594549c32b6e415c36ec326eaad31979eee1598a2af287f3017a2cc61e</td><td>2025-11-08 11:56:25</td><td>0xEA5dB6A5bC907490ADf29CFb2F1A3C95f664dA27</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0xf8c15621fb5953e31893ef997c7199c8108fc4e8abd2628c6e9d8b34941bc38e</td><td>2025-11-08 11:52:37</td><td>0xEA5dB6A5bC907490ADf29CFb2F1A3C95f664dA27</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0xdf5827f07316ad003249bd119c58e2ec9f367b4acba1f86777731d3aeffe021b</td><td>2025-11-08 11:37:59</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0xdf22420a9068098a50d08c3f225c04073d44e064d8f0e947a63752fc23e3e0bd</td><td>2025-11-08 11:35:15</td><td>0xEA5dB6A5bC907490ADf29CFb2F1A3C95f664dA27</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0x9d23cc4bd53aafc9ac9e2f16768e96db3a77914abb8342268571382c095b685</td><td>2025-11-08 07:42:15</td><td>0xEA5dB6A5bC907490ADf29CFb2F1A3C95f664dA27</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0xba750c5aebae5c9e5812971e6f67751ca290a2ed2aa19933bd586451e8bbf74f</td><td>2025-11-08 07:40:49</td><td>0xEA5dB6A5bC907490ADf29CFb2F1A3C95f664dA27</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0xb86081832e637c0d1c683e334efc38fbc93843e9f8b532bf057ee203aefad266</td><td>2025-11-08 06:58:27</td><td>0xEA5dB6A5bC907490ADf29CFb2F1A3C95f664dA27</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0x6a22ab87b645054ebc7f4ff977838946d533fc78b2afa592f13f98a1a75e5fd3</td><td>2025-11-08 06:46:23</td><td>0xEA5dB6A5bC907490ADf29CFb2F1A3C95f664dA27</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0x442477a1bb9b9557572a7be98486f220b2280d2f81aa045b2cd46aca41ece03</td><td>2025-11-08 06:32:51</td><td>0xEA5dB6A5bC907490ADf29CFb2F1A3C95f664dA27</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0x7b8ae4d5c2382959ac3b0100b73ab702980b9cbdd330aac130e20333b4923df</td><td>2025-11-08 04:36:01</td><td>0xEA5dB6A5bC907490ADf29CFb2F1A3C95f664dA27</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0x266e943c87ecef52c241bf38a09577936bfda49a118ec29e1e989338c92721cc</td><td>2025-10-06 15:17:59</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr class="extra-row"><td>0x60c06040</td><td>2025-10-06 15:16:29</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+          </tbody>
+        </table>
+        <button id="show-more-btn" class="show-more-btn" onclick="toggleTxns(true)">Show More</button>
+        <button id="show-less-btn" class="show-more-btn" style="display:none;" onclick="toggleTxns(false)">Show Less</button>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact-block fade-up delay-9">
+      <h2>Contact & Social</h2>
+      <ul>
+        <li><strong>Email:</strong>
+          <a href="mailto:aststineofficial@gmail.com" target="_blank">
+            aststineofficial@gmail.com
+          </a>
+        </li>
+        <li><strong>Instagram:</strong>
+          <a href="https://www.instagram.com/astatine_official_?igsh=MXdwNDRnNXlvYmEzdg==" target="_blank">
+            instagram.com/astatine_official_
+          </a>
+        </li>
+        <li><strong>LinkedIn (Queries):</strong>
+          <a href="https://www.linkedin.com/in/sai-deekshith-0b3733359?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank">
+            Sai Deekshith – LinkedIn
+          </a>
+        </li>
+      </ul>
+      <div class="contact-message">
+        <p>For any queries, reach out via email, Instagram, or LinkedIn.</p>
+      </div>
+    </section>
+
+    <footer>© 2025 Astatine (AM)</footer>
+  </div>
+
+  <!-- Inline JavaScript -->
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('hamburger-menu');
+      menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function menuClick(className) {
+      const menu = document.getElementById('hamburger-menu');
+      menu.style.display = 'none';
+      const el = document.querySelector('.' + className);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function copyContract() {
+      const addr = document.getElementById('contract-address').textContent;
+      if (navigator.clipboard) navigator.clipboard.writeText(addr);
+    }
+
+    function toggleTxns(showMore) {
+      const extras = document.querySelectorAll('.extra-row');
+      extras.forEach(tr => { tr.style.display = showMore ? '' : 'none'; });
+      document.getElementById('show-more-btn').style.display = showMore ? 'none' : 'inline-block';
+      document.getElementById('show-less-btn').style.display = showMore ? 'inline-block' : 'none';
+    }
+
+    window.addEventListener('load', function () {
+      const closeBtn = document.getElementById('close-popup');
+      if (closeBtn) {
+        closeBtn.onclick = function () {
+          document.getElementById('welcome-popup').style.display = 'none';
+        };
+      }
+
+      toggleTxns(false);
+
+      const canvas = document.getElementById('coinChart');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ["Start", "Growth Point", "Current"],
+            datasets: [{
+              label: 'Astatine Price (USD)',
+              data: [0.00003109, 0.00009000, 0.00010858],
+              borderWidth: 3,
+              borderColor: 'lime',
+              pointRadius: 5,
+              fill: false,
+              tension: 0.35
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: { y: { beginAtZero: false } },
+            plugins: { legend: { labels: { color: 'white' } } }
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

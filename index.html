@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Search Console verification -->
+  <meta name="google-site-verification" content="8nkWmIoHJ0D5-8XaRvP6prCuDBr67zUg6HOLgYdigLA" />
+
+  <title>Astatine (AM) – Premium Polygon Coin</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Favicon for Google and browsers -->
+  <link rel="icon" href="https://astatinecrypto.com/favicon.png" type="image/png">
+  <link rel="shortcut icon" href="https://astatinecrypto.com/favicon.png" type="image/png">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Welcome Popup -->
+  <div id="welcome-popup">
+    <div class="welcome-content">
+      <img src="logo.png" alt="Astatine Logo" class="welcome-logo">
+      <h2>Welcome to the Astatine World!</h2>
+      <button id="close-popup">Enter</button>
+    </div>
+  </div>
+
+  <div class="wrapper">
+    <!-- Top Bar: menu left, small logo right -->
+    <div class="top-bar">
+      <div class="hamburger-wrap">
+        <button class="hamburger-btn" onclick="toggleMenu()">
+          <span></span><span></span><span></span>
+        </button>
+        <div id="hamburger-menu" class="hamburger-menu">
+          <button onclick="menuClick('info-block')">Details</button>
+          <button onclick="menuClick('aim-section')">Aim</button>
+          <button onclick="menuClick('visual-chart-block')">Chart</button>
+          <button onclick="menuClick('txn-section')">Transactions</button>
+          <button onclick="menuClick('contact-block')">Contact</button>
+        </div>
+      </div>
+      <div class="top-logo-small">
+        <img src="logo.png" alt="Astatine Small Logo">
+      </div>
+    </div>
+
+    <!-- Buy Button -->
+    <div class="buy-btn-wrap fade-up">
+      <a href="https://www.instagram.com/astatine_official_?igsh=MXdwNDRnNXlvYmEzdg==" target="_blank" class="buy-btn">
+        Buy Astatine (AM)
+      </a>
+    </div>
+
+    <!-- Login / Sign Up Button -->
+    <div class="buy-btn-wrap fade-up">
+      <a href="auth.html" class="buy-btn">
+        Login / Sign Up
+      </a>
+    </div>
+
+    <!-- Logo -->
+    <div class="logo-wrap fade-up">
+      <img src="logo.png" alt="Astatine Logo" class="big-logo">
+    </div>
+
+    <!-- Name and Tagline -->
+    <h1 class="main-title fade-up delay-1">Astatine (AM)</h1>
+    <p class="tagline fade-up delay-2">Your gateway to a new currency of the future world.</p>
+
+    <!-- Current Price -->
+    <section class="price-block fade-up delay-2a">
+      <h2>Current Price</h2>
+      <div class="price-value">$0.00010669</div>
+    </section>
+
+    <!-- Coin Details -->
+    <section class="info-block fade-up delay-3">
+      <h2>Coin Details</h2>
+      <ul>
+        <li><strong>Market Cap:</strong> $1.07M</li>
+        <li><strong>Total Supply:</strong> 10B</li>
+        <li><strong>Network:</strong> Polygon</li>
+        <li><strong>Contract:</strong>
+          <span class="contract-box" id="contract-address">0x9f3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</span>
+          <button onclick="copyContract()" class="copy-btn">copy</button>
+        </li>
+        <li><strong>Created:</strong> Oct 3, 2025</li>
+        <li><strong>Holders:</strong> 24</li>
+      </ul>
+    </section>
+
+    <!-- Team -->
+    <section class="team-block fade-up delay-4">
+      <h2>Team</h2>
+      <ul>
+        <li><strong>Founder:</strong> Abhinav Sai Nath</li>
+        <li><strong>Co-Founder:</strong> Kokil Reddy</li>
+        <li><strong>CEO:</strong> Sai Deekshith.R</li>
+        <li><strong>Manager:</strong> Vishnu</li>
+      </ul>
+    </section>
+
+    <!-- Growth -->
+    <section class="growth-block fade-up delay-5">
+      <h2>1 Month Growth</h2>
+      <div class="growth-percent">-1.87%</div>
+    </section>
+
+    <!-- Chart -->
+    <section class="visual-chart-block fade-up delay-6">
+      <h2>Astatine (AM) – Price Growth</h2>
+      <canvas id="coinChart" width="400" height="180"></canvas>
+    </section>
+
+    <!-- Play & Earn -->
+    <div class="play-earn-wrap fade-up delay-7">
+      <a href="https://www.astrocade.com/games/cosmic-dash-astatine-odyssey/01KB082AH8HVCVF5FDW7YX1MPM"
+         target="_blank" class="play-earn-btn">
+        ▶️ Play &amp; Earn (Astatine Odyssey)
+      </a>
+    </div>
+
+    <!-- Aim & Future Goals -->
+    <section class="aim-section fade-up delay-7a">
+      <h2>Aim &amp; Future Goals</h2>
+      <p>
+        Astatine (AM) is a next-generation utility token created to revolutionize the e-commerce world through blockchain technology. Unlike typical meme or speculative coins, Astatine is built with a clear real-world purpose: to power a complete decentralized e-commerce ecosystem where users can shop, pay, and earn directly using crypto. AM enables fast, secure, and gas-efficient transactions designed specifically for everyday shopping. The project aims to integrate crypto payments into online marketplaces by providing merchant tools, customer rewards, decentralized product listings, and seamless checkout experiences. By removing middlemen, Astatine lowers transaction fees, increases transparency, and offers a borderless shopping experience.
+      </p>
+      <p>
+        Our vision is to build a future-ready e-commerce universe where every product purchase, reward, and transaction operates on blockchain. Astatine connects merchants and buyers directly, creating a transparent, user-driven marketplace. With AM at the core, users will gain access to loyalty rewards, exclusive offers, and a smoother shopping experience powered entirely by decentralized technology. Astatine stands apart by focusing on utility over speculation, combining practicality, innovation, and real-world adoption. AM isn’t just a coin; it’s the foundation of a crypto-powered shopping world built for the future.
+      </p>
+    </section>
+
+    <!-- Transaction History -->
+    <section class="txn-section fade-up delay-8">
+      <h2>Recent Transaction History (Polygon)</h2>
+      <div id="txn-table-wrap">
+        <table id="txn-table">
+          <thead>
+            <tr>
+              <th>Hash</th>
+              <th>Date/Time</th>
+              <th>From</th>
+              <th>To</th>
+              <th>Amount (AM)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- first 5 visible -->
+            <tr><td>0x6209dd5f9f6a21c939d8eeaf81e80af8940aec1d4496d10d9d29b583cfa0b01c</td><td>2025-11-26 18:01:41</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr><td>0x8973f015c4f8e411b77319c58d05fdaee5a9e43dfcc18c2df2146688e5b65893</td><td>2025-11-18 16:05:23</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr><td>0x6d88d6e14f32bc1d5ab234eac12c2a0383155b74a782d52a786bf58ca6cceb74</td><td>2025-11-14 16:42:00</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr><td>0xfa1651ae3c3085bc2efc76e5b87304af37d83eb7b3cbe4a8e4b0b1026f69032a</td><td>2025-11-14 13:46:14</td><td>0xEA5dB6A5bC907490ADf29CFb2F1A3C95f664dA27</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+            <tr><td>0xf8c918ca83c3a3e38224361ec254f7f04813802201597c084485486fdf411f5a</td><td>2025-11-13 15:53:28</td><td>0xB1342e0f8726e59D639fA139fE5e14D123b9Fe75</td><td>0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E</td><td>0.00000000</td></tr>
+
+            <!-- remaining rows hidden initially -->
+            <!-- (keep all your extra-row <tr> elements here, unchanged) -->
+            <!-- ... existing extra-row rows ... -->
+          </tbody>
+        </table>
+        <button id="show-more-btn" class="show-more-btn" onclick="toggleTxns(true)">Show More</button>
+        <button id="show-less-btn" class="show-more-btn" style="display:none;" onclick="toggleTxns(false)">Show Less</button>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact-block fade-up delay-9">
+      <h2>Contact & Social</h2>
+      <ul>
+        <li><strong>Email:</strong>
+          <a href="mailto:puttarajulikinya@astatinecrypto.com" target="_blank">
+            puttarajulikinya@astatinecrypto.com
+          </a>
+        </li>
+        <li><strong>Instagram:</strong>
+          <a href="https://www.instagram.com/astatine_official_?igsh=MXdwNDRnNXlvYmEzdg==" target="_blank">
+            instagram.com/astatine_official_
+          </a>
+        </li>
+        <li><strong>LinkedIn (Queries):</strong>
+          <a href="https://www.linkedin.com/in/sai-deekshith-0b3733359?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank">
+            Sai Deekshith – LinkedIn
+          </a>
+        </li>
+        <li><strong>Twitter (Follow):</strong>
+          <a href="https://x.com/Abi26452733874?t=S_ZVPbJ6cqW_b85_WrPsAQ&s=09" target="_blank">
+            Astatine – Twitter (X)
+          </a>
+        </li>
+      </ul>
+      <div class="contact-message">
+        <p>For any queries, reach out via email, Instagram, Twitter, or LinkedIn.</p>
+      </div>
+    </section>
+
+    <footer>© 2025 Astatine (AM)</footer>
+  </div>
+
+  <!-- Inline JavaScript -->
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('hamburger-menu');
+      menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function menuClick(className) {
+      const menu = document.getElementById('hamburger-menu');
+      menu.style.display = 'none';
+      const el = document.querySelector('.' + className);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function copyContract() {
+      const addr = document.getElementById('contract-address').textContent;
+      if (navigator.clipboard) navigator.clipboard.writeText(addr);
+    }
+
+    function toggleTxns(showMore) {
+      const extras = document.querySelectorAll('.extra-row');
+      extras.forEach(tr => { tr.style.display = showMore ? '' : 'none'; });
+      document.getElementById('show-more-btn').style.display = showMore ? 'none' : 'inline-block';
+      document.getElementById('show-less-btn').style.display = showMore ? 'inline-block' : 'none';
+    }
+
+    window.addEventListener('load', function () {
+      const closeBtn = document.getElementById('close-popup');
+      if (closeBtn) {
+        closeBtn.onclick = function () {
+          document.getElementById('welcome-popup').style.display = 'none';
+        };
+      }
+
+      toggleTxns(false);
+
+      const canvas = document.getElementById('coinChart');
+      if (canvas) {
+        const ctx = canvas.getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ["Start", "Growth Point", "Current"],
+            datasets: [{
+              label: 'Astatine Price (USD)',
+              data: [0.00003109, 0.00009000, 0.00010858],
+              borderWidth: 3,
+              borderColor: 'lime',
+              pointRadius: 5,
+              fill: false,
+              tension: 0.35
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: { y: { beginAtZero: false } },
+            plugins: { legend: { labels: { color: 'white' } } }
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

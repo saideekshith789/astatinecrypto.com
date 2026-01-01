@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Astatine – Login / Sign Up</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="https://astatinecrypto.com/favicon.png" type="image/png">
+  <style>
+    .popup-success {
+      position: fixed;
+      left: 50%;
+      top: 18%;
+      transform: translateX(-50%) scale(0.9);
+      background: #111;
+      color: #FFD700;
+      padding: 12px 18px;
+      border-radius: 10px;
+      border: 1px solid #FFD70088;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      z-index: 9999;
+      box-shadow: 0 0 22px rgba(255, 215, 0, 0.5);
+      font-size: 0.9rem;
+    }
+    .popup-success.show {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+    .password-wrap {
+      position: relative;
+    }
+    .password-wrap input {
+      padding-right: 38px;
+    }
+    .toggle-eye {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: #ccc;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-card-header">
+        <img src="logo.png" alt="Astatine Logo" class="auth-logo">
+        <h2>Astatine Portal</h2>
+      </div>
+
+      <div class="auth-tabs">
+        <button id="tab-signup" class="active" onclick="showForm('signup')">Sign Up</button>
+        <button id="tab-login" onclick="showForm('login')">Login</button>
+      </div>
+
+      <!-- SIGNUP FORM -->
+      <form id="form-signup" onsubmit="submitSignup(event)">
+        <h3>Create Account</h3>
+        <input type="text" id="su_first" placeholder="First Name" required>
+        <input type="text" id="su_last" placeholder="Last Name" required>
+        <label class="auth-label">Date of Birth</label>
+        <input type="date" id="su_dob" required>
+        <input type="tel" id="su_phone" placeholder="Phone Number" required>
+        <input type="email" id="su_email" placeholder="Email Address" required>
+        <div class="password-wrap">
+          <input type="password" id="su_password" placeholder="Password" required>
+          <span class="toggle-eye" onclick="togglePassword('su_password', this)">👁</span>
+        </div>
+        <div class="password-wrap">
+          <input type="password" id="su_confirm" placeholder="Confirm Password" required>
+          <span class="toggle-eye" onclick="togglePassword('su_confirm', this)">👁</span>
+        </div>
+        <input type="text" id="su_referral" placeholder="Referral Code (optional)">
+        <button type="submit" class="auth-submit">Sign Up</button>
+      </form>
+
+      <!-- LOGIN FORM -->
+      <form id="form-login" onsubmit="submitLogin(event)" style="display:none;">
+        <h3>Login</h3>
+        <input type="email" id="li_email" placeholder="Email Address" required>
+        <div class="password-wrap">
+          <input type="password" id="li_password" placeholder="Password" required>
+          <span class="toggle-eye" onclick="togglePassword('li_password', this)">👁</span>
+        </div>
+        <button type="submit" class="auth-submit">Login</button>
+      </form>
+
+      <div id="auth-message"></div>
+    </div>
+  </div>
+
+  <!-- Success / error popup -->
+  <div id="popup-success" class="popup-success">Success!</div>
+
+  <!-- Firebase v8 SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+  <script>
+    // Firebase config
+    var firebaseConfig = {
+      apiKey: "AIzaSyDP0R74Z1ALMnBBk4XYKFro2upNTKeotSI",
+      authDomain: "astatine-portal.firebaseapp.com",
+      projectId: "astatine-portal",
+      storageBucket: "astatine-portal.firebasestorage.app",
+      messagingSenderId: "194995283564",
+      appId: "1:194995283564:web:da97d1afa734112a211a49",
+      measurementId: "G-3W83NRYSDX"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    var auth = firebase.auth();
+    var db = firebase.firestore();
+  </script>
+
+  <script>
+    function showForm(which) {
+      var tabSignup = document.getElementById('tab-signup');
+      var tabLogin = document.getElementById('tab-login');
+      var formSignup = document.getElementById('form-signup');
+      var formLogin = document.getElementById('form-login');
+
+      if (which === 'signup') {
+        formSignup.style.display = '';
+        formLogin.style.display = 'none';
+        tabSignup.classList.add('active');
+        tabLogin.classList.remove('active');
+      } else {
+        formSignup.style.display = 'none';
+        formLogin.style.display = '';
+        tabSignup.classList.remove('active');
+        tabLogin.classList.add('active');
+      }
+      document.getElementById('auth-message').innerText = '';
+    }
+
+    function playCardSuccess() {
+      var card = document.querySelector('.auth-card');
+      if (!card) return;
+      card.classList.add('auth-success');
+      setTimeout(function () { card.classList.remove('auth-success'); }, 900);
+    }
+
+    function showPopup(msg) {
+      var p = document.getElementById('popup-success');
+      p.innerText = msg;
+      p.classList.add('show');
+      setTimeout(function () { p.classList.remove('show'); }, 2200);
+    }
+
+    function togglePassword(inputId, el) {
+      var input = document.getElementById(inputId);
+      if (!input) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        el.style.color = '#FFD700';
+      } else {
+        input.type = 'password';
+        el.style.color = '#ccc';
+      }
+    }
+
+    function isValidName(str) {
+      return /^[A-Za-z .]+$/.test(str);
+    }
+
+    function isValidPassword(str) {
+      if (str.length < 6) return false;
+      if (!/[A-Z]/.test(str)) return false;
+      var digits = (str.match(/[0-9]/g) || []).length;
+      return digits >= 3;
+    }
+
+    // SIGNUP (UPDATED)
+    async function submitSignup(e) {
+      e.preventDefault();
+      var msgEl = document.getElementById('auth-message');
+      msgEl.innerText = 'Starting signup...';
+
+      var first = document.getElementById('su_first').value.trim();
+      var last = document.getElementById('su_last').value.trim();
+      var dob = document.getElementById('su_dob').value;
+      var phone = document.getElementById('su_phone').value.trim();
+      var email = document.getElementById('su_email').value.trim();
+      var pass = document.getElementById('su_password').value;
+      var confirm = document.getElementById('su_confirm').value;
+      var referral = document.getElementById('su_referral').value.trim();
+
+      if (!isValidName(first) || !isValidName(last)) {
+        msgEl.innerText = 'Name can contain letters, spaces and dots only.';
+        return;
+      }
+      if (!dob) {
+        msgEl.innerText = 'Please select your date of birth.';
+        return;
+      }
+      if (!isValidPassword(pass)) {
+        msgEl.innerText = 'Password must be 6+ chars, 1 uppercase letter, and at least 3 digits.';
+        return;
+      }
+      if (pass !== confirm) {
+        msgEl.innerText = 'Passwords do not match.';
+        return;
+      }
+
+      try {
+        var cred = await auth.createUserWithEmailAndPassword(email, pass);
+        var user = cred.user;
+        var uid = user.uid;
+
+        await db.collection('users').doc(uid).set({
+          firstName: first,
+          lastName: last,
+          dob: dob,
+          phone: phone,
+          email: email,
+          referralCode: referral || null,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        await user.sendEmailVerification();
+
+        // NEW: Save user data for dashboard
+        localStorage.setItem('userData', JSON.stringify({
+          email: email,
+          name: first + ' ' + last
+        }));
+
+        msgEl.innerText = 'Signup successful! Verification email sent.';
+        playCardSuccess();
+        showPopup('Signup successful! Check your email.');
+      } catch (err) {
+        console.log('SIGNUP ERROR:', err);
+        if (err.code === 'auth/email-already-in-use') {
+          msgEl.innerText = 'Email already exists. Please login.';
+        } else if (err.code === 'auth/invalid-email') {
+          msgEl.innerText = 'Invalid email format.';
+        } else {
+          msgEl.innerText = 'Signup error: ' + err.message;
+        }
+      }
+    }
+
+    // LOGIN (UPDATED - CONNECTS TO DASHBOARD)
+    async function submitLogin(e) {
+      e.preventDefault();
+      var msgEl = document.getElementById('auth-message');
+      msgEl.innerText = 'Logging in...';
+
+      var email = document.getElementById('li_email').value.trim();
+      var pass = document.getElementById('li_password').value;
+
+      try {
+        var cred = await auth.signInWithEmailAndPassword(email, pass);
+        var user = cred.user;
+
+        if (!user.emailVerified) {
+          msgEl.innerText = 'Please verify your email first.';
+          return;
+        }
+
+        msgEl.innerText = 'Login successful! Going to dashboard...';
+        playCardSuccess();
+        showPopup('Login successful!');
+
+        // NEW: Save user data for dashboard + wallet session cleanup
+        localStorage.setItem('userData', JSON.stringify({
+          email: email,
+          name: 'User' // Will be updated from Firestore if needed
+        }));
+
+        // Clear old wallet session on new login
+        localStorage.removeItem('walletSession');
+
+        // REDIRECT TO DASHBOARD
+        setTimeout(function () {
+          window.location.href = 'dashboard.html';
+        }, 800);
+
+      } catch (err) {
+        console.log('LOGIN ERROR:', err);
+        if (err.code === 'auth/user-not-found') {
+          msgEl.innerText = 'Email not found. Please sign up.';
+        } else if (err.code === 'auth/wrong-password') {
+          msgEl.innerText = 'Wrong password.';
+        } else {
+          msgEl.innerText = 'Login error: ' + err.message;
+        }
+      }
+    }
+  </script>
+</body>
+</html>

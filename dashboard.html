@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+</head>
+
+<body>
+  
+</body>
+
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Astatine Dashboard</title>
+
+<!-- Wallet connection libraries -->
+<script src="https://unpkg.com/@walletconnect/web3-provider@1.8.0/dist/umd/index.min.js"></script>
+<script src="https://unpkg.com/web3modal@1.9.12/dist/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+
+<style>
+body{
+  margin:0;
+  background:#000;
+  color:gold;
+  font-family:Arial, sans-serif;
+  padding:25px;
+}
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+button{
+  background:linear-gradient(135deg,#d4af37,#ffd700);
+  color:#000;
+  border:none;
+  padding:12px 26px;
+  border-radius:25px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+  margin-top:25px;
+}
+.card{
+  border:1px solid gold;
+  border-radius:14px;
+  padding:18px;
+  background:rgba(255,215,0,0.06);
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.card img{
+  width:32px;
+  height:32px;
+}
+.label{
+  font-size:13px;
+  color:#aaa;
+}
+.value{
+  font-size:18px;
+  font-weight:bold;
+}
+.change{
+  font-size:13px;
+}
+.change.up{ color:#0f0; }
+.change.down{ color:#f00; }
+.hidden{ display:none !important; }
+
+/* Buy modal layout */
+#buyModal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+.buy-box{
+  background:#000;
+  border:1px solid gold;
+  border-radius:16px;
+  padding:25px;
+  width:90%;
+  max-width:420px;
+}
+.buy-section{
+  margin-top:20px;
+  padding:18px;
+  border:1px solid gold;
+  border-radius:12px;
+  background:rgba(255,215,0,0.05);
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <h2>Astatine Dashboard</h2>
+  <button id="connectBtn">Connect Wallet</button>
+</div>
+
+<div class="cards">
+
+  <!-- POL -->
+  <div class="card">
+    <img src="https://cryptologos.cc/logos/polygon-matic-logo.png" alt="POL Logo">
+    <div>
+      <div class="label">POL</div>
+      <div class="value" id="polBal">0</div>
+      <div class="change" id="polChange">--</div>
+    </div>
+  </div>
+
+  <!-- USDT -->
+  <div class="card">
+    <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT Logo">
+    <div>
+      <div class="label">USDT</div>
+      <div class="value" id="usdtBal">0</div>
+      <div class="change" id="usdtChange">--</div>
+    </div>
+  </div>
+
+  <!-- Astatine -->
+  <div class="card">
+    <img src="https://via.placeholder.com/32/FFD700/000000?text=A" alt="AM Logo">
+    <div>
+      <div class="label">Astatine</div>
+      <div class="value" id="amBalance">0</div>
+      <div class="change" id="amChange">--</div>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top:25px;">
+  <button onclick="openBuyModal()">Buy Astatine</button>
+</div>
+
+<!-- Buy Modal -->
+<div id="buyModal" class="hidden">
+  <div class="buy-box">
+    <h3 style="text-align:center;">Buy Astatine</h3>
+
+    <button style="width:100%;margin-top:15px" onclick="selectBuy('pol')">
+      Buy with POL
+    </button>
+
+    <button style="width:100%;margin-top:10px" onclick="selectBuy('usdt')">
+      Buy with USDT
+    </button>
+
+    <button style="width:100%;margin-top:10px" onclick="selectBuy('p2p')">
+      Buy using Money (P2P)
+    </button>
+
+    <button style="width:100%;margin-top:15px;background:#111;color:gold;border:1px solid gold"
+            onclick="closeBuyModal()">
+      Cancel
+    </button>
+
+    <div id="buy-pol" class="buy-section hidden">
+      <p>Swap POL to Astatine through our official launchpad.</p>
+    </div>
+
+    <div id="buy-usdt" class="buy-section hidden">
+      <p>Swap USDT to Astatine using our verified launchpad.</p>
+    </div>
+
+    <div id="buy-p2p" class="buy-section hidden">
+      <p>Complete the P2P payment process to receive Astatine.</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ===== NETWORK & TOKEN SETTINGS ===== */
+const POLYGON_RPC = "https://polygon-rpc.com";
+const ASTATINE_TOKEN = "0x9F3b2fbAE6E54bF38c741A71F7ba120FC3d7F12E"; // our token contract
+const ASTATINE_DECIMALS = 18;
+const USDT_ADDRESS = "0x3813e82e6f7098b9583FC0F33a962D02018B6803"; // Polygon USDT
+const ERC20_ABI = ["function balanceOf(address owner) view returns (uint256)"];
+
+/* Wallet connection setup */
+const providerOptions = {
+  walletconnect:{
+    package:window.WalletConnectProvider.default,
+    options:{
+      rpc:{137:POLYGON_RPC}
+    }
+  }
+};
+const web3Modal = new window.Web3Modal.default({
+  cacheProvider:false,
+  providerOptions
+});
+
+/* Buy modal helpers */
+function resetBuySections(){
+  document.querySelectorAll(".buy-section").forEach(s=>s.classList.add("hidden"));
+}
+function openBuyModal(){
+  document.getElementById("buyModal").classList.remove("hidden");
+  resetBuySections();
+}
+function closeBuyModal(){
+  document.getElementById("buyModal").classList.add("hidden");
+}
+function selectBuy(type){
+  resetBuySections();
+  document.getElementById("buy-"+type).classList.remove("hidden");
+}
+
+/* Wallet connect & fetch balances */
+document.getElementById("connectBtn").onclick = async () => {
+  try{
+    const instance = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(instance);
+    const signer = provider.getSigner();
+    const address = await signer.getAddress();
+
+    // POL balance
+    const polBal = +ethers.utils.formatEther(await provider.getBalance(address));
+    document.getElementById("polBal").innerText = polBal.toFixed(4);
+
+    // USDT balance
+    const usdt = new ethers.Contract(USDT_ADDRESS, ERC20_ABI, provider);
+    const usdtBal = +ethers.utils.formatUnits(await usdt.balanceOf(address),6);
+    document.getElementById("usdtBal").innerText = usdtBal.toFixed(2);
+
+    // Astatine balance
+    const am = new ethers.Contract(ASTATINE_TOKEN, ERC20_ABI, provider);
+    const amBal = +ethers.utils.formatUnits(await am.balanceOf(address),ASTATINE_DECIMALS);
+    document.getElementById("amBalance").innerText = amBal.toFixed(4);
+
+    // Fetch live prices from Coingecko
+    const resp = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=matic-network,tether&vs_currencies=usd&include_24hr_change=true");
+    const data = await resp.json();
+
+    // POL
+    const polPrice = data["matic-network"].usd.toFixed(2);
+    const polChange = data["matic-network"].usd_24h_change.toFixed(2);
+    document.getElementById("polChange").innerText = polPrice + " USD (" + (polChange>0?"+":"")+polChange+"%)";
+    document.getElementById("polChange").className = "change " + (polChange>=0?"up":"down");
+
+    // USDT
+    const usdtPrice = data["tether"].usd.toFixed(2);
+    const usdtChange = data["tether"].usd_24h_change.toFixed(2);
+    document.getElementById("usdtChange").innerText = usdtPrice + " USD (" + (usdtChange>0?"+":"")+usdtChange+"%)";
+    document.getElementById("usdtChange").className = "change " + (usdtChange>=0?"up":"down");
+
+    // Astatine placeholder price & change
+    document.getElementById("amChange").innerText = "-- USD (--%)";
+    document.getElementById("amChange").className = "change";
+
+  } catch(err){
+    alert("Wallet connection cancelled or failed");
+    console.log(err);
+  }
+};
+</script>
+
+</body>
+</html>
